@@ -3,7 +3,7 @@ import speech_recognition as sr
 import os
 import re
 import webbrowser
-import smtplib
+import smtplib, ssl
 import requests
 import pyttsx3
 #write here weather command
@@ -82,7 +82,7 @@ def assistant(command):
             subreddit = reg_ex.group(1)
             url = url + 'r/' + subreddit
         webbrowser.open(url)
-        engine.say("Done!")
+        engine.say("Done! opening reddit ")
         print('Done!')
         engine.runAndWait()
         engine.stop()
@@ -92,9 +92,9 @@ def assistant(command):
         url = 'https://facebook.com/'
         if reg_ex:
             domain = reg_ex.group(1)
-            url = 'https://www.' + domain
+            url = 'https://www.facebook.com/' 
             webbrowser.open(url)
-            engine.say('Done!')
+            engine.say('Done! opening facebook')
             print('Done!')
             engine.runAndWait()
             engine.stop()
@@ -105,7 +105,7 @@ def assistant(command):
         reg_ex = re.search('open youtube (.*)', command)
         url = 'https://www.youtube.com/'
         webbrowser.open(url)
-        engine.say("Done!")
+        engine.say("Done! opening youtube")
         print('done!')
         engine.runAndWait()
         engine.stop()
@@ -114,16 +114,16 @@ def assistant(command):
         reg_ex = re.search('open calculator (.*)', command)
         url = 'https://www.google.com/search?client=firefox-b-d&sxsrf=ACYBGNS-342fFwUg1NYIdYkOoKW5nyuwHw%3A1580315899456&ei=-7QxXvS9G6bDz7sP9YOWgAw&q=calculator&oq=calcalutor&gs_l=psy-ab.3...0.0..25146...0.0..0.0.0.......0......gws-wiz.CVHnRxNPCXg&ved=0ahUKEwi0p8e-n6nnAhWm4XMBHfWBBcAQ4dUDCAo&uact=5'
         webbrowser.open(url)
-        engine.say("Done!")
+        engine.say("Done! opening calculator")
         print('Done!')
         engine.runAndWait()
         engine.stop()
 
-    elif 'show me trending images on web' in command:
-        reg_ex = re.search('show me trending images on web (.*)', command)
+    elif 'trending images on web' in command:
+        reg_ex = re.search('trending images on web (.*)', command)
         url = 'https://www.bing.com/images/trending?form=HDRSC2'
         webbrowser.open(url)
-        engine.say("Done!")
+        engine.say("Done! showing trending images on bing")
         print('Done!')
         engine.runAndWait()
         engine.stop()
@@ -132,35 +132,55 @@ def assistant(command):
         reg_ex = re.search('what\'s the news (.*)', command)
         url = 'https://www.msn.com/en-in/news/world'
         webbrowser.open(url)
-        engine.say("Done!")
+        engine.say("Done! showing trending news on msn")
         print('Done!')
         engine.runAndWait()
         engine.stop()
 
-    elif'i am hungry' in command:              #show me hotels near by, where am i, hosipatal near by
-        reg_ex = re.search('I am hungry (.*)', command)
+    elif'restaurants near me ' in command:              #show me hotels near by, where am i, hosipatal near by
+        reg_ex = re.search('restaurants near me (.*)', command)
         try:
             from googlesearch import search
         except ImportError:
             print("NO MODULE NAMED 'GOOGLE' FOUND")
             
         #to search
-        query = "Show restaurant near me"
+        query = "restaurants near me"
         url = query
         webbrowser.open_new(url)
     
 
         for j in search(query, tld="co.in", num=10, stop=1, pause=2):
             print(j)
+        engine.say("done! showing restaurants near me")
+        print('Done!')
+        engine.runAndWait()
+        engine.stop()
 
+    #where am I
+    elif'where am i' in command:
+        reg_ex = re.search('where am i (.*)', command)
+        url = 'http://www.where-am-i.net/me/?'
+        webbrowser.open(url)
+      
+        engine.say('let\'s see')
+        engine.runAndWait()
+        engine.stop()
 
+    #hospitals near me
     
+    elif 'hospitals near me' in command:
+        reg_ex = re.search('hospitals near me(.*)', command)
+        try:
+            from googlesearch import search
+        except ImportError:
+            print("NO MODULE NAMED 'GOOGLE' FOUND")
 
-   
-    elif 'play music' in command:   #solve this
-        reg_ex = re.search('play music a(.*)', command)
-        file = r"C:\Users\karam\Desktop\musica.mp3"
-        os.system("C:\Program Files (x86)\Windows Media Player\wmplayer.exe" + file)
+        #TO SEARCH
+            query = 'hospitals near me'
+            url = query
+            webbrowser.open_new(url)
+
         
 
     
@@ -168,7 +188,12 @@ def assistant(command):
 
         
         
-    
+
+
+    #NORMAL CHAT WITH VA
+
+    elif 'Nice work' in command:
+        talkToMe('Thank/s that/s my job')
 
     elif 'what\'s up' in command:
         talkToMe('Just doing my thing')
@@ -209,24 +234,24 @@ def assistant(command):
         talkToMe('Who is the recipient?')
         recipient = myCommand()
 
-        if 'John' in recipient:
+        if 'kunal' in recipient:
             talkToMe('What should I say?')
             content = myCommand()
 
             #init gmail SMTP
-            mail = smtplib.SMTP('smtp.gmail.com', 587)
-
-            #identify to server
-            mail.ehlo()
+            mail = server = smtplib.SMTP_SSL('smtp.googlemail.com', 587)
 
             #encrypt session
             mail.starttls()
 
+            #identify to server
+            mail.ehlo()
+
             #login
-            mail.login('username', 'password')
+            server.login('100memeslike@gmail.com', 'casida/nm/ss..4:37,YT')
 
             #send message
-            mail.sendmail('John Fisher', 'JARVIS2.0@protonmail.com', content)
+            server.sendmail('100memeslike@gmail.com', '100memeslike@gmail.com', content)
 
             #end mail connection
             mail.close()
